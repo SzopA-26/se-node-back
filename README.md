@@ -1,4 +1,5 @@
-# se-node-back
-
+#### install
+```
 npm i
 npm start
+```
