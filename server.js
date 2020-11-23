@@ -147,7 +147,7 @@ app.get('/api/building/:id', (req, res) => {
 })
 
 // BOOKING REQUEST
-app.route('/api/booking_request')
+app.route('/api/booking_requests')
     .get((req, res) => {
         let sql = "SELECT * FROM booking_requests"
         db.query(sql, (err, result) => {
