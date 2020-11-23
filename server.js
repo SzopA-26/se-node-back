@@ -73,6 +73,14 @@ app.put('/api/user/:id/money/:money', (req, res) => {
         res.send(true);
     })
 })
+app.put('/api/user/checkIn_at', (req, res) => {
+    let sql = "UPDATE users SET room_id = ?, checkIn_at = ? WHERE id = ?"
+    db.query(sql, [req.body.room_id, req.body.checkIn_at, req.body.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
+    })
+})
 
 // ROOM
 app.get('/api/rooms', (req, res) => {
@@ -125,7 +133,7 @@ app.get('/api/room/building_id/:building_id/floor/:floor/number/:number', (req, 
 })
 app.put('/api/room', (req, res) => {
     let sql = "UPDATE rooms SET available = ? WHERE id = ?"
-    db.query(sql, [req.params.available, req.params.id], (err, result) => {
+    db.query(sql, [req.body.available, req.body.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(true)
@@ -219,6 +227,14 @@ app.get('/api/booking_request/:id', (req, res) => {
         if (err) throw err;
         console.log(sql);
         res.send(result[0])
+    })
+})
+app.delete('/api/booking_request/:id', (req, res) => {
+    let sql = "DELETE FROM booking_requests WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true)
     })
 })
 
