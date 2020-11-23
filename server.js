@@ -36,12 +36,12 @@ app.route('/api/users')
     })
     .put((req, res) => {
         let sql = "UPDATE users SET room_id = ?, " + 
-                    "title = ?, first_name = ?, last_name = ?, email = ?, birth_date = ?, gender = ?, citizen_id = ?, " + 
+                    "title = ?, first_name = ?, last_name = ?, email = ?, birth_date = ?, citizen_id = ?, " + 
                     "address = ?, phone_number_1 = ?, phone_number_2 = ?, money = ?, invited = ?, img = ?, checkIn_at = ? " +
                     "WHERE id = ?"
         db.query(sql, 
                 [req.body.room_id, req.body.title, req.body.first_name, req.body.last_name, req.body.email, 
-                req.body.birth_date, req.body.gender, req.body.citizen_id, req.body.address, req.body.phone_number_1, 
+                req.body.birth_date, req.body.citizen_id, req.body.address, req.body.phone_number_1, 
                 req.body.phone_number_2, req.body.money, req.body.invited, req.body.img, req.body.checkIn_at, req.body.id], 
                 (err, result) => {
                     if (err) throw err;
@@ -198,7 +198,7 @@ app.route('/api/booking_requests')
     })
     .post((req, res) => {
         let sql = "INSERT INTO booking_requests (user_id, room_id, admin_id, checkIn_at, status, created_at) " +
-                    "VALUES (?, ?, ?, ?, ?)"
+                    "VALUES (?, ?, ?, ?, ?, ?)"
         db.query(sql, [req.body.user_id, req.body.room_id, req.body.admin_id, req.body.checkIn_at, req.body.status, req.body.created_at], (err, result) => {
             if (err) throw(err);
             console.log(sql);
