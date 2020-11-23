@@ -165,6 +165,14 @@ app.route('/api/booking_requests')
             res.send(true)
         })
     })
+    .put((req, res) => {
+        let sql = "UPDATE booking_requests SET admin_id = ?, status = ? WHERE id = ?"
+        db.query(sql, [req.body.admin_id, req.body.status, req.body.id], (err, result) => {
+            if (err) throw(err);
+            console.log(sql);
+            res.send(true)
+        })
+    })
 
 // BILL
 app.get('/api/bills', (req, res) => {
