@@ -399,6 +399,24 @@ app.put('/api/wifi_codes', (req, res) => {
     })
 })
 
+// STATEMENT
+app.get('/api/user_statements/user_id/:id', (req, res) => {
+    let sql = "SELECT * FROM user_statements WHERE user_id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result);
+    })
+})
+app.post('/api/user_statement', (req, res) => {
+    let sql = "INSERT INTO user_statements (user_id, price, detail) VALUES (?, ?, ?)"
+    db.query(sql, [req.body.user_id, req.body.price, req.body.detail], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
+    })
+})
+
 app.listen(PORT, () => {
     console.log("Start server at PORT", PORT);
 })
