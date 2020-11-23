@@ -359,6 +359,14 @@ app.get('/api/wifi_codes/user_id/:id', (req, res) => {
         res.send(result)
     })
 })
+app.delete('/api/wifi_code/:id', (req, res) => {
+    let sql = "DELETE FROM wifi_codes WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
+    })
+})
 
 
 app.listen(PORT, () => {
