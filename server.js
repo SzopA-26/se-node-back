@@ -390,6 +390,14 @@ app.get('/api/wifi_codes/available/sorted', (req, res) => {
         res.send(result);
     })
 })
+app.put('/api/wifi_codes', (req, res) => {
+    let sql = "UPDATE wifi_codes SET dulation = ?, available = ?, user_id = ?, expire_at = ? WHERE id = ?"
+    db.query(sql, [req.body.dulation, req.body.available, req.body.user_id, req.body.expire_at, req.body.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
+    })
+})
 
 app.listen(PORT, () => {
     console.log("Start server at PORT", PORT);
