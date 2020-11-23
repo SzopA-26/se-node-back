@@ -29,7 +29,7 @@ app.route('/api/users')
         let sql = "INSERT INTO users (title, first_name, last_name, email, password, gender, role) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)"
         db.query(sql, [req.body.title, req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.gender, req.body.role], (err, result) => {
-            if (err) res.send(false);
+            if (err) throw err;
             console.log(sql);
             res.send(true);
         })
@@ -44,7 +44,7 @@ app.route('/api/users')
                 req.body.birth_date, req.body.gender, req.body.citizen_id, req.body.address, req.body.phone_number_1, 
                 req.body.phone_number_2, req.body.money, req.body.invited, req.body.img, req.body.checkIn_at, req.body.id], 
                 (err, result) => {
-                    if (err) res.send(false);
+                    if (err) throw err;
                     console.log(sql);
                     res.send(true);
                 })
@@ -157,10 +157,10 @@ app.route('/api/booking_requests')
         })
     })
     .post((req, res) => {
-        let sql = "INSERT INTO booking_requests (user_id, room_id, admin_id, checkIn_at, status) " +
+        let sql = "INSERT INTO booking_requests (user_id, room_id, admin_id, checkIn_at, status, created_at) " +
                     "VALUES (?, ?, ?, ?, ?)"
-        db.query(sql, [req.body.user_id, req.body.room_id, req.body.admin_id, req.body.checkIn_at, req.body.status], (err, result) => {
-            if (err) res.send(false);
+        db.query(sql, [req.body.user_id, req.body.room_id, req.body.admin_id, req.body.checkIn_at, req.body.status, req.body.created_at], (err, result) => {
+            if (err) throw(err);
             console.log(sql);
             res.send(true)
         })
