@@ -99,6 +99,22 @@ app.get('/api/room/type_id/:type_id/building_id/:building_id/floor/:floor', (req
         res.send(result)
     })
 })
+app.get('/api/room/building_id/:building_id/floor/:floor/number/:number', (req, res) => {
+    let sql = "SELECT * FROM rooms WHERE building_id = ? AND floor = ? AND number = ?"
+    db.query(sql, [req.params.building_id, req.params.floor, req.params.number], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result[0])
+    })
+})
+app.put('/api/room', (req, res) => {
+    let sql = "UPDATE rooms SET available = ? WHERE id = ?"
+    db.query(sql, [req.params.available, req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true)
+    })
+})
 
 // TYPE
 app.get('/api/types', (req, res) => {
@@ -235,8 +251,40 @@ app.get('/api/report/:id', (req, res) => {
     })
 })
 app.get('/api/reports/status/:status', (req, res) => {
+    let status;
+    switch (req.params.status) {
+        case 0:
+            status = "รอการยืนยัน";break;
+        case 1:
+            status = "อนุมัติ";break;
+        case 2:
+            status = "บันทึก";break;
+    }
     let sql = "SELECT * FROM reports WHERE status = ?"
-    db.query(sql, [req.params.status], (err, result) => {
+    db.query(sql, [status], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.get('/api/reports/status/:status/type/:type', (req, res) => {
+    let status, type;
+    switch (req.params.status) {
+        case 0:
+            status = "รอการยืนยัน";break;
+        case 1:
+            status = "อนุมัติ";break;
+        case 2:
+            status = "บันทึก";break;
+    }
+    switch (req.params.type) {
+        case 0:
+            type = "รายงาน";break;
+        case 1:
+            type = "แจ้งซ่อม";break;
+    }
+    let sql = "SELECT * FROM reports WHERE status = ? AND type = ?"
+    db.query(sql, [status, type], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result)
