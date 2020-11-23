@@ -256,6 +256,7 @@ app.get('/api/bill/room_id/:id/activated_at/:activated_at/status/:status', (req,
         res.send(result)
     })
 })
+app.post('/api/bill', )
 
 // REPORT 
 app.get('/api/reports', (req, res) => {
@@ -367,7 +368,7 @@ app.get('/api/packages/room_id/:id/status/:status', (req, res) => {
 
 // Wifi
 app.get('/api/wifi_codes/user_id/:id', (req, res) => {
-    let sql = "SELECT * FROM wifi_codes WHERE id = ?"
+    let sql = "SELECT * FROM wifi_codes WHERE user_id = ?"
     db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
