@@ -242,7 +242,7 @@ app.get('/api/bills', (req, res) => {
 })
 app.get('/api/bill/room_id/:id/activated_at/:activated_at/status/:status', (req, res) => {
     let sql = "SELECT * FROM bills WHERE room_id = ? AND activated_at <= ? AND status = ?"
-    db.query(sql, [req.params.id, req.params.activated_at, req.params.status], (err, result) => {
+    db.query(sql, [req.params.id, req.params.activated_at, parseInt(req.params.status)], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result)
@@ -269,11 +269,11 @@ app.get('/api/report/:id', (req, res) => {
 app.get('/api/reports/status/:status', (req, res) => {
     let status;
     switch (req.params.status) {
-        case "0":
-            status = "รอการยืนยัน";break;
         case "1":
-            status = "อนุมัติ";break;
+            status = "รอการยืนยัน";break;
         case "2":
+            status = "อนุมัติ";break;
+        case "3":
             status = "บันทึก";break;
     }
     let sql = "SELECT * FROM reports WHERE status = ?"
@@ -284,25 +284,26 @@ app.get('/api/reports/status/:status', (req, res) => {
     })
 })
 app.get('/api/reports/status/:status/type/:type', (req, res) => {
-    // let status, type;
-    // switch (req.params.status) {
-    //     case "0":
-    //         status = "รอการยืนยัน";break;
-    //     case "1":
-    //         status = "อนุมัติ";break;
-    //     case "2":
-    //         status = "บันทึก";break;
-    // }
-    // switch (req.params.type) {
-    //     case "0":
-    //         type = "รายงาน";break;
-    //     case "1":
-    //         type = "แจ้งซ่อม";break;
-    // }
+    let status, type;
+    switch (req.params.status) {
+        case "1":
+            status = "รอการยืนยัน";break;
+        case "2":
+            status = "อนุมัติ";break;
+        case "3":
+            status = "บันทึก";break;
+    }
+    switch (req.params.type) {
+        case "1":
+            type = "แจ้งซ่อม";break;
+        case "2":
+            type = "รายงาน";break;
+    }
     let sql = "SELECT * FROM reports WHERE status = ? AND type = ?"
-    db.query(sql, [req.params.status, req.params.type], (err, result) => {
+    db.query(sql, [status, type], (err, result) => {
         if (err) throw err;
         console.log(sql);
+        console.log(type);
         res.send(result)
     })
 })
