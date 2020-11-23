@@ -200,6 +200,47 @@ app.get('/api/bills', (req, res) => {
     })
 })
 
+// REPORT 
+app.get('/api/reports', (req, res) => {
+    let sql = "SELECT * FROM reports"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.get('/api/report/:id', (req, res) => {
+    let sql = "SELECT * FROM reports WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result[0])
+    })
+})
+app.get('/api/reports/status/:status', (req, res) => {
+    let sql = "SELECT * FROM reports WHERE status = ?"
+    db.query(sql, [req.params.status], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.post('/api/reports', (req, res) => {
+    let sql = "INSERT INTO reports (user_id, room_id, title, detail, type, status) VALUES (?, ?, ?, ?, ?, ?)"
+    db.query(sql, [req.body.user_id, req.body.room_id, req.body.title, req.body.detail, req.body.type, req.body.status], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true)
+    })
+})
+app.put('/api/reports', (req, res) => {
+    let sql = "UPDATE reports SET status = ? WHERE id = ?"
+    db.query(sql, [req.body.status, req.body.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true)
+    })
+})
 
 
 app.listen(PORT, () => {
