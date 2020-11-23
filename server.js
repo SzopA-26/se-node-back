@@ -341,6 +341,14 @@ app.get('/api/packages/room_id/:id', (req, res) => {
         res.send(result)
     })
 })
+app.get('/api/packages/room_id/:id/status/:status', (req, res) => {
+    let sql = "SELECT * FROM packages WHERE room_id = ? AND status = ?"
+    db.query(sql, [req.params.id, parseInt(req.params.status)], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
 
 // Wifi
 app.get('/api/wifi_codes/user_id/:id', (req, res) => {
