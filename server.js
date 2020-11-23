@@ -391,8 +391,8 @@ app.get('/api/wifi_codes/available/sorted', (req, res) => {
     })
 })
 app.put('/api/wifi_codes', (req, res) => {
-    let sql = "UPDATE wifi_codes SET dulation = ?, available = ?, user_id = ?, expire_at = ? WHERE id = ?"
-    db.query(sql, [req.body.dulation, req.body.available, req.body.user_id, req.body.expire_at, req.body.id], (err, result) => {
+    let sql = "UPDATE wifi_codes SET duration = ?, available = ?, user_id = ?, expire_at = ? WHERE id = ?"
+    db.query(sql, [req.body.duration, req.body.available, req.body.user_id, req.body.expire_at, req.body.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(true);
