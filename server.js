@@ -65,6 +65,14 @@ app.get('/api/users/room_id/:id', (req, res) => {
         res.send(result);
     })
 })
+app.put('/api/user/:id/money/:money', (req, res) => {
+    let sql = "UPDATE users SET money = ? WHERE id = ?"
+    db.query(sql, [req.params.money, req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
+    })
+})
 
 // ROOM
 app.get('/api/rooms', (req, res) => {
@@ -303,7 +311,6 @@ app.get('/api/reports/status/:status/type/:type', (req, res) => {
     db.query(sql, [status, type], (err, result) => {
         if (err) throw err;
         console.log(sql);
-        console.log(type);
         res.send(result)
     })
 })
@@ -318,6 +325,14 @@ app.post('/api/reports', (req, res) => {
 app.put('/api/reports', (req, res) => {
     let sql = "UPDATE reports SET status = ? WHERE id = ?"
     db.query(sql, [req.body.status, req.body.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true)
+    })
+})
+app.delete('/api/report/:id', (req, res) => {
+    let sql = "DELETE FROM reports WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(true)
@@ -367,7 +382,14 @@ app.delete('/api/wifi_code/:id', (req, res) => {
         res.send(true);
     })
 })
-
+app.get('/api/wifi_codes/available/sorted', (req, res) => {
+    let sql = "SELECT * FROM wifi_codes WHERE available = 'yes' ORDER BY created_at"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result);
+    })
+})
 
 app.listen(PORT, () => {
     console.log("Start server at PORT", PORT);
