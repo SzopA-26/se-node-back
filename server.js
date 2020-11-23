@@ -215,7 +215,7 @@ app.route('/api/booking_requests')
     })
 app.get('/api/booking_request/:id', (req, res) => {
     let sql = "SELECT * FROM booking_requests WHERE id = ?"
-    db.query(sql, (err, result) => {
+    db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result[0])
@@ -411,6 +411,14 @@ app.get('/api/user_statements/user_id/:id', (req, res) => {
 app.post('/api/user_statement', (req, res) => {
     let sql = "INSERT INTO user_statements (user_id, price, detail) VALUES (?, ?, ?)"
     db.query(sql, [req.body.user_id, req.body.price, req.body.detail], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
+    })
+})
+app.put('/api/user_statement', (req, res) => {
+    let sql = "UPDATE user_statements SET created_at = ? WHERE id = ?"
+    db.query(sql, [req.body.user_id, req.body.created_at], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(true);
