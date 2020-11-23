@@ -67,6 +67,14 @@ app.get('/api/users/room_id/:id', (req, res) => {
 })
 
 // ROOM
+app.get('/api/rooms', (req, res) => {
+    let sql = "SELECT * FROM rooms"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
 app.get('/api/room/:id', (req, res) => {
     let sql = "SELECT * FROM rooms WHERE id = ?"
     db.query(sql, [req.params.id], (err, result) => {
@@ -232,6 +240,14 @@ app.get('/api/bills', (req, res) => {
         res.send(result)
     })
 })
+app.get('/api/bill/room_id/:id/activated_at/:activated_at/status/:status', (req, res) => {
+    let sql = "SELECT * FROM bills WHERE room_id = ? AND activated_at <= ? AND status = ?"
+    db.query(sql, [req.params.id, req.params.activated_at, parseInt(req.params.status)], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
 
 // REPORT 
 app.get('/api/reports', (req, res) => {
@@ -253,11 +269,11 @@ app.get('/api/report/:id', (req, res) => {
 app.get('/api/reports/status/:status', (req, res) => {
     let status;
     switch (req.params.status) {
-        case 0:
+        case "1":
             status = "รอการยืนยัน";break;
-        case 1:
+        case "2":
             status = "อนุมัติ";break;
-        case 2:
+        case "3":
             status = "บันทึก";break;
     }
     let sql = "SELECT * FROM reports WHERE status = ?"
@@ -270,23 +286,24 @@ app.get('/api/reports/status/:status', (req, res) => {
 app.get('/api/reports/status/:status/type/:type', (req, res) => {
     let status, type;
     switch (req.params.status) {
-        case 0:
+        case "1":
             status = "รอการยืนยัน";break;
-        case 1:
+        case "2":
             status = "อนุมัติ";break;
-        case 2:
+        case "3":
             status = "บันทึก";break;
     }
     switch (req.params.type) {
-        case 0:
-            type = "รายงาน";break;
-        case 1:
+        case "1":
             type = "แจ้งซ่อม";break;
+        case "2":
+            type = "รายงาน";break;
     }
     let sql = "SELECT * FROM reports WHERE status = ? AND type = ?"
     db.query(sql, [status, type], (err, result) => {
         if (err) throw err;
         console.log(sql);
+        console.log(type);
         res.send(result)
     })
 })
@@ -304,6 +321,50 @@ app.put('/api/reports', (req, res) => {
         if (err) throw err;
         console.log(sql);
         res.send(true)
+    })
+})
+
+// PACKAGE
+app.get('/api/packages', (req, res) => {
+    let sql = "SELECT * FROM packages"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.get('/api/packages/room_id/:id', (req, res) => {
+    let sql = "SELECT * FROM packages WHERE room_id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.get('/api/packages/room_id/:id/status/:status', (req, res) => {
+    let sql = "SELECT * FROM packages WHERE room_id = ? AND status = ?"
+    db.query(sql, [req.params.id, parseInt(req.params.status)], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+
+// Wifi
+app.get('/api/wifi_codes/user_id/:id', (req, res) => {
+    let sql = "SELECT * FROM wifi_codes WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.delete('/api/wifi_code/:id', (req, res) => {
+    let sql = "DELETE FROM wifi_codes WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true);
     })
 })
 
