@@ -145,6 +145,14 @@ app.get('/api/building/:id', (req, res) => {
         res.send(result[0])
     })
 })
+app.get('/api/building/name/:name', (req, res) => {
+    let sql = "SELECT * FROM buildings WHERE name = ?"
+    db.query(sql, [req.params.name], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result[0])
+    })
+})
 
 // BOOKING REQUEST
 app.route('/api/booking_requests')
@@ -173,6 +181,15 @@ app.route('/api/booking_requests')
             res.send(true)
         })
     })
+app.get('/api/booking_request/:id', (req, res) => {
+    let sql = "SELECT * FROM booking_requests WHERE id = ?"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result[0])
+    })
+})
+
 
 // BILL
 app.get('/api/bills', (req, res) => {
