@@ -86,7 +86,7 @@ app.get('/api/user/:id', (req, res) => {
     db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
-        res.send(result)
+        res.send(result[0])
     })
 })
 app.get('/api/room/:id', (req, res) => {
@@ -94,16 +94,30 @@ app.get('/api/room/:id', (req, res) => {
     db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
-        res.send(result)
+        res.send(result[0])
     })
 })
-app.get('/api/room_image/:id/', (req, res) => {
+app.get('/api/room_image/room_id/:id', (req, res) => {
     let sql = "SELECT * FROM room_images WHERE room_id = ?"
     db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result)
     })
+})
+app.get('/api/building/:id', (req, res) => {
+    let sql = "SELECT * FROM buildings WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result[0])
+    })
+})
+
+app.post('/api/test', (req, res) => {
+    console.log(req.body.name);
+    console.log(req.body.role);
+    res.send(req.body);
 })
 
   
