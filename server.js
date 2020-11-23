@@ -3,6 +3,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const db = require('./db-connection');
+const { allowedNodeEnvironmentFlags } = require('process');
 const app = express();
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
@@ -89,12 +90,28 @@ app.get('/api/user/:id', (req, res) => {
         res.send(result[0])
     })
 })
+app.get('/api/users/room_id/:id', (req, res) => {
+    let sql = "SELECT * FROM users WHERE room_id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result);
+    })
+})
 app.get('/api/room/:id', (req, res) => {
     let sql = "SELECT * FROM rooms WHERE id = ?"
     db.query(sql, [req.params.id], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result[0])
+    })
+})
+app.get('/api/types', (req, res) => {
+    let sql = "SELECT * FROM types"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
     })
 })
 app.get('/api/type/:id', (req, res) => {
@@ -105,9 +122,17 @@ app.get('/api/type/:id', (req, res) => {
         res.send(result[0])
     })
 })
-app.get('/api/room_image/room_id/:id', (req, res) => {
+app.get('/api/room_images/room_id/:id', (req, res) => {
     let sql = "SELECT * FROM room_images WHERE room_id = ?"
     db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.get('/api/buildings', (req, res) => {
+    let sql = "SELECT * FROM buildings"
+    db.query(sql, (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result)
