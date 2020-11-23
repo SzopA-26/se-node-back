@@ -97,6 +97,14 @@ app.get('/api/room/:id', (req, res) => {
         res.send(result[0])
     })
 })
+app.get('/api/type/:id', (req, res) => {
+    let sql = "SELECT * FROM types WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result[0])
+    })
+})
 app.get('/api/room_image/room_id/:id', (req, res) => {
     let sql = "SELECT * FROM room_images WHERE room_id = ?"
     db.query(sql, [req.params.id], (err, result) => {
