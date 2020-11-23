@@ -284,23 +284,23 @@ app.get('/api/reports/status/:status', (req, res) => {
     })
 })
 app.get('/api/reports/status/:status/type/:type', (req, res) => {
-    let status, type;
-    switch (req.params.status) {
-        case "0":
-            status = "รอการยืนยัน";break;
-        case "1":
-            status = "อนุมัติ";break;
-        case "2":
-            status = "บันทึก";break;
-    }
-    switch (req.params.type) {
-        case "0":
-            type = "รายงาน";break;
-        case "1":
-            type = "แจ้งซ่อม";break;
-    }
+    // let status, type;
+    // switch (req.params.status) {
+    //     case "0":
+    //         status = "รอการยืนยัน";break;
+    //     case "1":
+    //         status = "อนุมัติ";break;
+    //     case "2":
+    //         status = "บันทึก";break;
+    // }
+    // switch (req.params.type) {
+    //     case "0":
+    //         type = "รายงาน";break;
+    //     case "1":
+    //         type = "แจ้งซ่อม";break;
+    // }
     let sql = "SELECT * FROM reports WHERE status = ? AND type = ?"
-    db.query(sql, [status, type], (err, result) => {
+    db.query(sql, [req.params.status, req.params.type], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(result)
@@ -320,6 +320,34 @@ app.put('/api/reports', (req, res) => {
         if (err) throw err;
         console.log(sql);
         res.send(true)
+    })
+})
+
+// PACKAGE
+app.get('/api/packages', (req, res) => {
+    let sql = "SELECT * FROM packages"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+app.get('/api/packages/room_id/:id', (req, res) => {
+    let sql = "SELECT * FROM packages WHERE room_id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
+    })
+})
+
+// Wifi
+app.get('/api/wifi_codes/user_id/:id', (req, res) => {
+    let sql = "SELECT * FROM wifi_codes WHERE id = ?"
+    db.query(sql, [req.params.id], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(result)
     })
 })
 
