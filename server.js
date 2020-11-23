@@ -256,7 +256,14 @@ app.get('/api/bill/room_id/:id/activated_at/:activated_at/status/:status', (req,
         res.send(result)
     })
 })
-app.post('/api/bill', )
+app.post('/api/bill', (req, res) => {
+    let sql = "INSERT INTO bills (room_id, user_id, water_unit, electric_unit, room_price, total_price, status, activated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    db.query(sql, [req.body.room_id, req.body.user_id, req.body.water_unit, req.body.electric_unit, req.body.room_price, req.body.total_price, req.body.status, req.body.activated_at], (err, result) => {
+        if (err) throw err;
+        console.log(sql);
+        res.send(true)
+    })
+})
 
 // REPORT 
 app.get('/api/reports', (req, res) => {
@@ -410,8 +417,8 @@ app.get('/api/user_statements/user_id/:id', (req, res) => {
     })
 })
 app.post('/api/user_statement', (req, res) => {
-    let sql = "INSERT INTO user_statements (user_id, price, detail) VALUES (?, ?, ?)"
-    db.query(sql, [req.body.user_id, req.body.price, req.body.detail], (err, result) => {
+    let sql = "INSERT INTO user_statements (user_id, price, detail, created_at) VALUES (?, ?, ?, ?)"
+    db.query(sql, [req.body.user_id, req.body.price, req.body.detail, req.body.created_at], (err, result) => {
         if (err) throw err;
         console.log(sql);
         res.send(true);
